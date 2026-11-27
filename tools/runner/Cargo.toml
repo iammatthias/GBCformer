@@ -1,0 +1,23 @@
+[package]
+name = "gbcformer-runner"
+version = "0.1.0"
+edition = "2024"
+description = "The minimal inference runner: the one model's streams moved by the GGUF's wiring table, with no machine rule of its own"
+license = "MIT OR Apache-2.0"
+publish = false
+
+# Its own workspace: the inference core only, never the Game Boy (`tests/dependencies.rs`).
+[workspace]
+
+[dependencies]
+gbcformer = { path = "../..", default-features = false }
+serde_json = "1.0.154"
+
+[features]
+# The engine's pass record (`GBCFORMER_RECORD`), as the full program writes it.
+record = ["gbcformer/record"]
+
+[profile.release]
+debug = "line-tables-only"
+lto = "thin"
+codegen-units = 1

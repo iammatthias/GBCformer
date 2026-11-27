@@ -1,0 +1,18 @@
+/target
+/target-*
+/vendor
+/.claude/
+.DS_Store
+
+# Your own ROMs, boot ROMs and saves: never committed
+*.gb
+*.gbc
+*.sav
+*_boot.bin
+
+# What the commands in README.md and CLAUDE.md write
+*.gguf
+*.safetensors
+*.wav
+*.ppm
+*.rpl

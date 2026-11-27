@@ -1,0 +1,506 @@
+b: presentation, the frames shown in a range written to a file (--pixels, --clip) :: clips.rs | self.ranges.iter().any(|r| (r.0..r.1).contains(&frame))
+b: presentation, the frames shown in a range written to a file (--pixels, --clip) :: clips.rs | for &(from, to) in self.ranges.iter().filter(|r| (r.0..r.1).contains(&frame)) {
+b: presentation, the frames shown in a range written to a file (--pixels, --clip) :: clips.rs | if frame == from {
+a: the length stream's inputs and the records it follows, by the wiring's cells :: length.rs | for &(addr, byte) in records {
+a: the length stream's inputs and the records it follows, by the wiring's cells :: length.rs | if addr == self.mode_cell {
+a: the length stream's inputs and the records it follows, by the wiring's cells :: length.rs | } else if !(self.w.skip.0..self.w.skip.1).contains(&addr) {
+a: the length stream's inputs and the records it follows, by the wiring's cells :: length.rs | let flags = self.modes[self.mode as usize] | if self.armed { self.w.armed } else { 0 } | if self.carried { self.w.carried } else { 0 };
+a: the length stream's judge: a write's time, index and value into the wiring's write inputs, its verdict's bits read by the wiring's masks :: length.rs | for i in 0..self.write.len() {
+a: the length stream's judge: a write's time, index and value into the wiring's write inputs, its verdict's bits read by the wiring's masks :: length.rs | for (i, v) in [halves, index, value].into_iter().enumerate() {
+a: the lines stream's inputs, by the wiring's flags :: lines.rs | for (addr, byte) in records {
+a: the lines stream's inputs, by the wiring's flags :: lines.rs | if addr == self.w.mode_cell {
+a: the lines stream's inputs, by the wiring's flags :: lines.rs | let flags = self.line_modes[self.mode as usize] | if self.window.1 { self.w.armed } else { 0 } | if self.window.2 { self.w.carried } else { 0 } | if high { self.w.high } else { 0 } | if self.held { self.w.held } else { 0 };
+a: the lines stream's inputs, by the wiring's flags :: lines.rs | let high = if self.passes_per_line > 1 { self.render(row, true).0 } else { vec![0; low.len()] };
+a: options, files, the scripted clock and the presses, checks :: main.rs | while let Some(i) = args.iter().position(|a| a == "") {
+a: options, files, the scripted clock and the presses, checks :: main.rs | args.splice(i..(i + 2).min(args.len()), lines.lines().flat_map(|l| ["".to_string(), l.to_string()]));
+a: options, files, the scripted clock and the presses, checks :: main.rs | while let Some(a) = it.next() {
+a: options, files, the scripted clock and the presses, checks :: main.rs | match a.as_str() {
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => snapshot = Some(PathBuf::from(value()?)),
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => frames = Some(value()?.parse().map_err(|_| "")?),
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => {
+a: options, files, the scripted clock and the presses, checks :: main.rs | let (frame, name, hold) = match parts[..] {
+a: options, files, the scripted clock and the presses, checks :: main.rs | [f, n] => (f, n, ""),
+a: options, files, the scripted clock and the presses, checks :: main.rs | [f, n, h] => (f, n, h),
+a: options, files, the scripted clock and the presses, checks :: main.rs | _ => return Err(bad()),
+a: options, files, the scripted clock and the presses, checks :: main.rs | if hold == 0 {
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => {
+a: options, files, the scripted clock and the presses, checks :: main.rs | let (s, per) = v.split_once(':').unwrap_or((&v, ""));
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => outputs = Some(PathBuf::from(value()?)),
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => rom = Some(PathBuf::from(value()?)),
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => boot = Some(PathBuf::from(value()?)),
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => threads = value()? != "",
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => check = Some(PathBuf::from(value()?)),
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => clips.dir = PathBuf::from(value()?),
+a: options, files, the scripted clock and the presses, checks :: main.rs | "" => {
+a: options, files, the scripted clock and the presses, checks :: main.rs | other => return Err(format!("")),
+a: options, files, the scripted clock and the presses, checks :: main.rs | Ok(Options { model, snapshot, check, frames: frames.unwrap_or(0), presses, time, outputs, rom: rom.ok_or(usage)?, boot, threads, clips })
+a: options, files, the scripted clock and the presses, checks :: main.rs | if bytes.len() < cells.1 {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Err(e) = run() {
+a: options, files, the scripted clock and the presses, checks :: main.rs | let (snap, memory, own, len, frames) = match &o.snapshot {
+a: options, files, the scripted clock and the presses, checks; the snapshot held to the manifest's wiring :: main.rs | Some(dir) => {
+a: options, files, the scripted clock and the presses, checks :: main.rs | None => {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Some(dir) = &o.check {
+a: threads and batches :: main.rs | if o.threads {
+a: options, files, the scripted clock and the presses, checks :: main.rs | let steps = steps::StepStream::new(slots::Seq::new(memory_stream), &wiring.steps, &snap, &|slot| spans.position(slot), &|slot| spans.output_position(slot));
+a: options, files, the scripted clock and the presses, checks :: main.rs | let button = |name: &str| wiring.present.buttons.iter().find(|(n, _)| n == name).map(|&(_, b)| b).ok_or(format!(""));
+a: options, files, the scripted clock and the presses, checks :: main.rs | let mut filter = gbcformer::transport::HighPass { charge: snap.filter, gain: wiring.present.gain, shift: wiring.present.shift };
+a: options, files, the scripted clock and the presses, checks :: main.rs | for frame in snap.frame..o.frames {
+a: options, files, the scripted clock and the presses, checks :: main.rs | let now = o.time.map_or_else(|| std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map_or(0, |d| d.as_secs()), |(s, per)| s + frame / per.max(1));
+a: options, files, the scripted clock and the presses, checks :: main.rs | let pressed = presses.iter().filter(|&&(f, _, h)| frame >= f && frame - f < h).fold(0, |b, p| b | p.1);
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Some(save) = run.run_frame(pressed) {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Some(out) = &mut out {
+a: options, files, the scripted clock and the presses, checks :: main.rs | run.drain_audio(&mut filter, &mut audio, false);
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Some(out) = &mut out {
+b: presentation, the frames shown in a range written to a file (--pixels, --clip) :: main.rs | if o.clips.wants(frame) {
+a: options, files, the scripted clock and the presses, checks :: main.rs | run.drain_audio(&mut filter, &mut audio, true);
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Some(out) = &mut out {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Some(save) = run.take_save(false) {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Some(out) = &mut out {
+a: options, files, the scripted clock and the presses, checks :: main.rs | for (name, seq) in [("", &steps.seq), ("", &lines.seq), ("", &segments.p.seq), ("", &spans.seq), ("", &length.seq)] {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if !serial.is_empty() {
+a: options, files, the scripted clock and the presses, checks :: main.rs | match (snap.boot, &o.boot) {
+a: options, files, the scripted clock and the presses, checks :: main.rs | (Some(cells), Some(path)) => {
+a: options, files, the scripted clock and the presses, checks :: main.rs | (Some(_), None) => return Err("".into()),
+a: options, files, the scripted clock and the presses, checks :: main.rs | (None, Some(_)) => return Err("".into()),
+a: options, files, the scripted clock and the presses, checks :: main.rs | (None, None) => {}
+a: options, files, the scripted clock and the presses, checks :: main.rs | if strip(snap) != want {
+a: options, files, the scripted clock and the presses, checks :: main.rs | for (name, a, b) in [("", memory, &wmem), ("", own, &wown), ("", len, &wlen)] {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Some(p) = (0..ab.len().max(bb.len())).find(|&p| ab.get(p) != bb.get(p)) {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if let Some(p) = (0..ap.len().max(bp.len())).find(|&p| ap.get(p) != bp.get(p)) {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if al != bl {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if *frames != wframes {
+a: options, files, the scripted clock and the presses, checks :: main.rs | if diffs.is_empty() {
+a: options, files, the scripted clock and the presses, checks :: main.rs | } else {
+a: a port by the high bits of an emitted address :: ports.rs | let n = w.codes.iter().map(|(c, _)| *c as usize + 1).max().unwrap_or(0);
+a: a port by the high bits of an emitted address :: ports.rs | for (c, t) in &w.codes {
+a: a port by the high bits of an emitted address :: ports.rs | self.w.indirect_reads.iter().any(|(code, lows)| *code == port.code && lows.contains(&(port.low as u8)))
+a: the power-on tables, looked up by the ROM's and boot ROM's length and header :: power_on.rs | for &(p, b) in &s.bytes {
+a: the power-on tables, looked up by the ROM's and boot ROM's length and header :: power_on.rs | for &(a, b) in &s.present {
+a: the power-on tables, looked up by the ROM's and boot ROM's length and header :: power_on.rs | let console = w.consoles.iter().find(|c| c.boot_len == boot.len()).ok_or(format!("", boot.len()))?;
+a: the power-on tables, looked up by the ROM's and boot ROM's length and header :: power_on.rs | let board: &Board = console.boards.iter().find(|b| b.kind == kind && b.ram == ram && b.rom_len == rom.len()).ok_or(format!("", rom.len()))?;
+a: the power-on tables, looked up by the ROM's and boot ROM's length and header :: power_on.rs | let console = w.consoles.iter().find(|c| c.boot_len == boot.len()).ok_or(format!("", boot.len()))?;
+a: the power-on tables, looked up by the ROM's and boot ROM's length and header :: power_on.rs | for &(a, b) in &console.boot_overlay {
+guard: a check of the wiring's or a pass's shape :: present.rs | assert_eq!(frames.len(), 2 * n, "");
+b: presentation :: present.rs | if !self.colours {
+b: presentation :: present.rs | for x in 0..self.p.width {
+b: presentation :: present.rs | if std::mem::take(&mut self.pending) {
+b: presentation :: present.rs | let c = if self.colours { self.p.blank_colour } else { self.p.blank_shade };
+a: a record at the wiring's mode cell sets the mode flag the streams pass in; the open row closes first, so a row draws under the one mode it opened with :: rows.rs | if self.is_open() && records.lock().expect("").iter().any(|r| r.0 == mode_cell) {
+a: the open row closes: the lines stream draws it unless a verdict marked it, then the stepper's drawing for the queue as it stands :: rows.rs | let Some(o) = self.open.as_mut() else { return };
+a: the length stream's verdict bits: a write the queue takes joins it; a marked row is redrawn by the stepper while the spans stream has yet to read its length :: rows.rs | if v.takes {
+a: the proofs' counts of a marked row's taken writes before and after the spans stream read its length; nothing the streams read :: rows.rs | if o.marked && v.takes {
+a: the length stream's verdict counters (instrumentation; no stream reads them) :: rows.rs | let (before, after) = (!length.asked && !o.took_before, length.asked && !o.took_after);
+a: the length stream's verdict counters (instrumentation; no stream reads them) :: rows.rs | (o.took_before, o.took_after) = (o.took_before || before, o.took_after || after);
+a: the length stream's verdict bits: a write the queue takes joins it; a marked row is redrawn by the stepper while the spans stream has yet to read its length :: rows.rs | if o.marked && v.takes && !length.asked {
+a: the open row closes: the lines stream draws it unless a verdict marked it, then the stepper's drawing for the queue as it stands :: rows.rs | let Some(o) = self.open.take() else { return };
+a: the open row closes: the lines stream draws it unless a verdict marked it, then the stepper's drawing for the queue as it stands :: rows.rs | if !o.marked {
+a: the open row closes: the lines stream draws it unless a verdict marked it, then the stepper's drawing for the queue as it stands :: rows.rs | let d = match o.drawn {
+a: the open row closes: the lines stream draws it unless a verdict marked it, then the stepper's drawing for the queue as it stands :: rows.rs | Some((n, d)) if n == o.writes.len() => d,
+a: the open row closes: the lines stream draws it unless a verdict marked it, then the stepper's drawing for the queue as it stands :: rows.rs | _ => {
+a: while a row is open, a read of an own-memory byte takes the newest record kept since its trigger, which its stream has not yet applied, and counts it for the proofs :: rows.rs | let byte = records.lock().expect("").iter().rev().find(|r| r.0 == addr).map(|r| r.1);
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | for c in copies {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if self.rows.is_open() {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | return match self.rows.held_record(self.records, i) {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Some(b) => b,
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | None => self.lines.call(move |l| l.own_read(i, Vec::new())),
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | impl Access for Reach<'_> {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | match self.ports.target(port) {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Target::Spans { read: Some((ev, address)), .. } => {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | match pass.own.filter(|_| self.ports.indirect(port)) {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Some(i) => self.own_read(i),
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | None => pass.read,
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Target::Spans { read: None, .. } => panic!(""),
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Target::Segments { address } => {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Target::Own { index } => {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | match self.ports.target(port).clone() {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Target::Spans { write: Some((ev, address)), .. } => {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Target::Spans { write: None, .. } => panic!(""),
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Target::Segments { address } => {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Target::Own { index } => self.own_write(index, value),
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if !self.copied.is_empty() {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if self.spans.paused() {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | let ran = if self.steps.halted_now && !self.spans.wake {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | } else {
+a: the rest and wake passes, at the halted flag a step pass emitted :: scheduler.rs | if was_halted && !self.steps.halted_now {
+a: the rest and wake passes, at the halted flag a step pass emitted :: scheduler.rs | if !was_halted && self.steps.halted_now {
+a: the bus events, at the flags and cycles a step pass emitted (wiring::Steps::events), in cycle order :: scheduler.rs | for k in 0..req.fetch_events.len() {
+a: the bus events, at the flags and cycles a step pass emitted (wiring::Steps::events), in cycle order :: scheduler.rs | if req.fetch_events[k] {
+guard: a check of what a pass emitted or of the cut's own count :: scheduler.rs | assert!(line.done <= k as u8, "", line.done);
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | for i in 0..req.served.len() {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if let Some(byte) = early[i] {
+guard: a check of what a pass emitted or of the cut's own count :: scheduler.rs | assert!(!req.read_events[i], "");
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if req.enabled[i] {
+a: the bus events, at the flags and cycles a step pass emitted (wiring::Steps::events), in cycle order :: scheduler.rs | if req.read_events[i] {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | for &p in &out.reads {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if self.steps.blocked(p) {
+a: the bus events, at the flags and cycles a step pass emitted (wiring::Steps::events), in cycle order :: scheduler.rs | for k in 0..out.idle.len() {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | for w in &out.writes {
+a: the bus events, at the flags and cycles a step pass emitted (wiring::Steps::events), in cycle order :: scheduler.rs | if req.write_events[w.slot] {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | match self.ports.port(w.at) {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | Some(port) => self.write_port(port, w.value),
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | None if self.steps.blocked(w.at) => self.cut(),
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | None => {}
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if let Some(second) = w.second {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | let port = self.ports.port(second).unwrap_or_else(|| panic!(""));
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if out.ack != 0 {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if out.stop {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if !self.has_clock {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if let Some(last) = self.clock.replace(seconds) {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if elapsed > 0 {
+guard: a check of what a pass emitted or of the cut's own count :: scheduler.rs | assert!(elapsed >> (digits - 1) >> 1 == 0, "");
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | for k in (0..digits).filter(|k| elapsed >> k & 1 == 1) {
+a: the hold the buttons pass released, the held bit's change :: scheduler.rs | if let Some(held) = held {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | while self.halves < self.frame_end {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if self.save_len == 0 {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if self.has_clock {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | for (slot, bit, byte, to) in &w.footer_bits {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | let time = self.clock.unwrap_or(0).to_le_bytes();
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | pub fn drain_audio(&mut self, filter: &mut transport::HighPass, out: &mut Vec<[i16; 2]>, all: bool) {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | for s in self.segments.drain(all) {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | out.push(filter.apply(s));
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | impl Sink for Landing<'_> {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | impl Blocks for Blocking<'_> {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if self.hand {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if self.hand {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if std::mem::take(&mut r.stop_pending) {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if !r.held.is_empty() {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | for c in std::mem::take(&mut r.held) {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if self.hand {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | if !(req.enabled[i] && req.served[i]) {
+a: the bus event's two passes as the run supplies them (transport::Rewrites) :: scheduler.rs | impl transport::Rewrites for Rewriting<'_> {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | impl transport::Opening for Opening<'_> {
+a: the streams moved by the wiring: each port to its stream, each flag a pass emitted acted on :: scheduler.rs | impl transport::Accesses for Stepping<'_> {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | all: Positions,
+a: the segments stream on the shared cutter, its inputs and outputs by the wiring :: segments.rs | impl SegmentPass for Passes {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | let most = if seg.fast { self.w.max_fast_cycles } else { self.w.max_cycles };
+guard: a check of what a pass emitted or of the cut's own count :: segments.rs | assert!(seg.cycles <= most, "", seg.cycles);
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | for p in 0..self.seq.n_inputs() {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | let (wa, wv) = seg.write.unwrap_or((0, 0));
+a: the segments stream on the shared cutter, its inputs and outputs by the wiring :: segments.rs | let ev = if seg.write.is_some() { self.w.on_write } else { 0 } | if e.fall { self.w.on_fall } else { 0 } | if e.reset { self.w.on_reset } else { 0 } | if e.rise { self.w.on_rise } else { 0 } | if seg.sample { self.w.on_sample } else { 0 } | if seg.fast { self.w.on_fast } else { 0 };
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | self.seq.set_input(r, seg.read.unwrap_or(0));
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | self.seq.decode(&self.all);
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | for &(o, i) in &self.carry {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | if seg.sample {
+a: the segments stream on the shared cutter, its inputs and outputs by the wiring :: segments.rs | if let Some(a) = seg.read {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | for (name, v) in &snap.segments {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | all: Positions::new((seq.n_inputs()..seq.cfg.seq()).collect()),
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | for k in 1..=cycles {
+a: the segments stream on the shared cutter, its inputs and outputs by the wiring :: segments.rs | self.cut.events(&mut self.p, if k == cycles { events } else { Events::default() }, fast);
+a: the segments stream on the shared cutter, its inputs and outputs by the wiring :: segments.rs | match self.p.read {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | Some((a, v)) if a == address => v,
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | _ => unreachable!(""),
+a: the segments stream on the shared cutter, its inputs and outputs by the wiring :: segments.rs | if let (Op::Advance(c, e, f, r), Some(Op::Advance(pc, pe, pf, pr))) = (op, self.ops.last_mut())
+a: the condition of merging two queued advances at one speed (continued line) :: segments.rs | && *pf == f
+a: the condition of merging two queued advances at one speed (continued line) :: segments.rs | && *pr == r
+a: the condition of merging two queued advances at one speed (continued line) :: segments.rs | && *pe == Events::default()
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | } else {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | if let Op::Advance(c, ..) = op {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | if self.ops.len() >= 1000 || self.cycles >= 1000 {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | if ops.is_empty() {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | for op in ops {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | match op {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | Op::Write(a, v) => s.write(a, v),
+a: the segments stream on the shared cutter, its inputs and outputs by the wiring :: segments.rs | Op::Advance(c, e, f, r) => s.advance(c, e, f, r),
+a: the segments stream on the shared cutter, its inputs and outputs by the wiring :: segments.rs | if !s.p.samples.is_empty() {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | pub fn drain(&mut self, all: bool) -> Vec<[i16; 2]> {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | if all {
+a: the segments stream cut at the events the wiring lists, its sample countdown emitted :: segments.rs | } else {
+a: slot names to positions, bytes to tokens :: slots.rs | position: usize,
+a: slot names to positions, bytes to tokens :: slots.rs | pub fn position(self) -> usize {
+a: slot names to positions, bytes to tokens :: slots.rs | self.position
+a: slot names to positions, bytes to tokens :: slots.rs | let tokens = (0..cfg.seq()).map(|p| if p < cfg.n_inputs { tok::input(&cfg, p, 0) } else { tok::output_mask(&cfg, p) }).collect();
+a: slot names to positions, bytes to tokens :: slots.rs | self.names[..self.cfg.n_inputs].iter().position(|n| n == name).unwrap_or_else(|| panic!(""))
+a: slot names to positions, bytes to tokens :: slots.rs | self.cfg.n_inputs + self.names[self.cfg.n_inputs..].iter().position(|n| n == name).unwrap_or_else(|| panic!(""))
+a: slot names to positions, bytes to tokens :: slots.rs | Bit { position: self.output(&f.slot), mask: f.mask }
+a: slot names to positions, bytes to tokens :: slots.rs | Bit { position: self.input(&f.slot), mask: f.mask }
+a: slot names to positions, bytes to tokens :: slots.rs | self.bytes[b.position] & b.mask != 0
+a: slot names to positions, bytes to tokens :: slots.rs | for &p in self.tokens.fresh() {
+a: slot names to positions, bytes to tokens :: slots.rs | let Some(v) = self.byte_of.of(decoded[p]) else { panic!("", self.names[p], decoded[p]) };
+a: slot names to positions, bytes to tokens :: slots.rs | for &p in positions {
+a: slot names to positions, bytes to tokens :: slots.rs | for &p in positions {
+a: slot names to positions, bytes to tokens :: slots.rs | for &p in positions {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | position: usize,
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | for (name, v) in &snap.spans {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | let result: Vec<usize> = (seq.n_inputs()..seq.cfg.seq()).filter(|p| !request.contains(p)).collect();
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | position: seq.input(&w.position),
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | pub fn position(&self, slot: &str) -> usize {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | self.state[b.position()] & b.mask() != 0
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | start.place(&mut state, self.phase, self.position);
+guard: a check of what a pass emitted or of the cut's own count :: spans.rs | assert!(cycles <= self.w.max_span, "");
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | for &(_, i) in &self.carry {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | let (d, q) = if self.flags_pause { (0, cycles as u16) } else { (cycles as u16, 0) };
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | for (k, &p) in at.iter().enumerate() {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | for &(p, b) in &self.fixed {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | for (p, &b) in bytes.iter().enumerate() {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | if p == self.late { self.seq.mask_input(p) } else { self.seq.set_input(p, b) }
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | if self.seq.is(self.asks) {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | for &(o, i) in &self.carry {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | for (l, a) in lines.iter_mut().zip(&o.lines) {
+guard: a check of what a pass emitted or of the cut's own count :: spans.rs | assert!(schedule.count <= o.lines.len(), "", schedule.count);
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | self.t.close(&Cut { horizon: s.get(&o.horizon), schedule, edge: (!s.is(o.edge_held)).then(|| s.get(&o.edge)), drop: s.get(&o.edge_drop), rise: (!s.is(o.edge_held)).then(|| s.get(&o.rise)), owed: s.get(&o.stall) });
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | if s.is(o.serial_start) {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | let run = s.is(o.run).then(|| Run { page: s.get(&o.run_page) as u8, line: s.get(&o.run_line) as u8, last_early: s.is(o.run_last_early), before: s.get(&o.run_before) as u8, last: s.get(&o.run_last) as u8, dest: s.get(&o.run_dest) as u8, fill: s.get(&o.run_fill) as u8 });
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | if let Some(r) = run {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | block: s.is(o.block_copy).then(|| (s.get(&o.block_source) as u16, s.get(&o.block_dest) as u16, s.get(&o.block_len) as u16, s.is(o.block_held))),
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | follow: match s.get(&o.follow) { 0 => None, c => Some(Event::of([c as u8, 0], 0)) },
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | own: s.is(o.own).then(|| s.get(&o.own_index) as u8),
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | assert!(self.w.rates.contains(&rate), "");
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | start.place(&mut state, self.phase, self.position);
+a: the rest and wake passes, by state flags a pass emitted (wiring::Spans::idle, kept) :: spans.rs | if !self.state_at(self.idle) {
+a: the step-end pass, by a state flag a pass emitted (wiring::Spans::uncounted) :: spans.rs | if self.state_at(self.uncounted) {
+a: the rest and wake passes, by state flags a pass emitted (wiring::Spans::idle, kept) :: spans.rs | if self.state_at(self.kept) {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | impl transport::Passes for SpanStream {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | let code = match event {
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | transport::Own::Tick => self.w.tick,
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | transport::Own::Stop => self.w.stop,
+a: the spans stream's fields decoded and its inputs set by the wiring :: spans.rs | self.state[self.position]
+a: the stepper's inputs and the records it follows, by the wiring's cells :: stepper.rs | for &(addr, byte) in records {
+a: the stepper's inputs and the records it follows, by the wiring's cells :: stepper.rs | if addr == self.mode_cell {
+a: the stepper's inputs and the records it follows, by the wiring's cells :: stepper.rs | } else {
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | let flags = self.modes[self.mode as usize] | if fast { w.fast } else { 0 } | if held { w.held } else { 0 };
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | let first = flags | w.start | if window.1 { w.armed } else { 0 } | if window.2 { w.carried } else { 0 };
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | for p in self.write.clone().into_iter().chain(self.carry.iter().map(|c| c.1).collect::<Vec<_>>()) {
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | loop {
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | if report & self.w.pixel != 0 {
+guard: a check of the wiring's or a pass's shape :: stepper.rs | assert!(x < self.width, "", self.width);
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | if report & self.w.applied != 0 {
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | if report & self.w.finished != 0 {
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | if report & self.w.done != 0 {
+guard: a stepper length outside a byte stops the run :: stepper.rs | let length = u8::try_from(raw).unwrap_or_else(|_| panic!(""));
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | let pending: Vec<u8> = match writes.get(head) {
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | Some(&[t0, t1, index, value]) => vec![t0, t1, index, value, applied | self.w.pending],
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | None => vec![0; self.write.len()],
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | for (&p, v) in self.write.iter().zip(pending) {
+a: the stepper's passes: the wiring's flags in, each carried output back as an input, the queue's head write, the pass's report bits read by the wiring's masks :: stepper.rs | for (p, v) in carried {
+guard: a check of the wiring's or a pass's shape :: steps.rs | assert!(w.served.len() == 2 && w.reads.len() == 2 && w.read_at.len() == 2 && w.access_at.len() == transport::DATA && w.fetch_cycles.len() == transport::SLOTS - transport::DATA && w.access_in.len() * 2 == transport::SLOTS, "");
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | .map(|p| match p {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Part::Carry { from, mask } => Built::Carry { from: seq.output(from), mask: *mask },
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Part::State { slot } => Built::State { at: state_at(slot) },
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Part::Busy { bit } => Built::Busy { bit: *bit },
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Part::Emitted { slot } => Built::Emitted { at: emitted_at(slot) },
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Part::Locks { present, mask, shift } => Built::Locks { present: *present, mask: *mask, shift: *shift },
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for (name, b) in &snap.steps {
+guard: a check of the wiring's or a pass's shape :: steps.rs | assert!(ev.fetches.len() == 3 && ev.reads.len() == 2 && ev.writes.len() == 2, "");
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | request: step.iter().copied().filter(|p| !result.contains(p)).collect(),
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | cleared: (0..seq.n_inputs()).filter(|p| !line_in.contains(p) && !late.contains(p)).collect(),
+guard: a check of the wiring's or a pass's shape :: steps.rs | assert!(s.fetch.iter().chain(s.line.iter()).chain(s.second.iter()).chain(s.ev_pass.iter()).all(|p| !s.step.contains(p)), "");
+guard: a check of the wiring's or a pass's shape :: steps.rs | assert!(s.carry.iter().map(|c| c.1).chain(s.composed.iter().map(|c| c.0)).chain(s.access_in.iter().copied()).all(|p| s.cleared.contains(&p)), "");
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for p in s.line_in.clone() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let halted_carry = s.composed.iter().flat_map(|(at, parts)| parts.iter().filter_map(move |p| if let Built::Carry { mask, .. } = p { Some((*at, *mask)) } else { None })).collect::<Vec<_>>();
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | s.halted_now = halted_carry.iter().any(|&(at, mask)| s.carried[at] & mask & s.w.halted.mask != 0);
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | b | match p {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Built::Carry { mask, .. } => self.carried[*at] & mask,
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Built::State { at } => sig.state[*at],
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Built::Busy { bit } => if sig.busy { *bit } else { 0 },
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Built::Emitted { at } => sig.emitted[*at],
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Built::Locks { present, mask, shift } => sig.locks.map_or(0, |l| present | (l & mask) << shift),
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for k in 0..self.cleared.len() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for &(_, i) in &self.carry {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for &(at, b) in composed {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for k in 0..self.access_in.len() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for k in 0..self.cleared.len() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for (k, &p) in self.late.iter().enumerate() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if late[k] == 0 {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | } else {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if !std::mem::take(&mut self.staged[i]) {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if self.staged_tokens.is_empty() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let tokens = if self.staged_tokens.is_empty() { &self.finished } else { &self.staged_tokens };
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if !self.staged.contains(&true) {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | assert!(!self.staged.contains(&true), "");
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if self.fetched.iter().any(|&b| self.seq.is(b)) {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let at: Vec<Option<u32>> = (0..flagged.len()).map(|k| flagged[k].then(|| self.seq.get(&self.fetch_at[k]) as u32)).collect();
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for &a in at.iter().flatten() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let byte = match map.port(a) {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Some(port) => ports.read(port),
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | None => self.seq.engine.cell(a),
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for (p, byte) in kept {
+guard: a check of the wiring's or a pass's shape :: steps.rs | assert_eq!(again, flagged, "");
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | served[i].then(|| {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | map.port(a).unwrap_or_else(|| panic!(""))
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let at = std::array::from_fn(|s| if s < data { self.seq.get(&self.access_at[s]) as u8 } else { let (b, c) = self.fetch_cycles[s - data]; if self.seq.is(b) { c } else { 0 } });
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let settled = !served.iter().any(|&s| s) && !wants_locks;
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if !settled {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | late.extend((0..served.len()).map(|i| if served[i] { data[i] } else { 0 }));
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | late.push(if wants_locks { asked & self.w.locks_mask } else { 0 });
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for i in 0..self.records.len() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for i in 0..enabled.len() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if enabled[i] {
+a: the bus events, at the flags and cycles a step pass emitted (wiring::Steps::events), in cycle order :: steps.rs | for k in 0..self.ev_idle.len() {
+a: the bus events, at the flags and cycles a step pass emitted (wiring::Steps::events), in cycle order :: steps.rs | if self.seq.is(self.ev_idle[k]) {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for k in 0..self.windows.len() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for &(o, i) in &self.carry {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for (at, parts) in &self.composed {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for p in parts {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if let Built::Carry { from, mask } = p {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for i in 0..self.writes.len() {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if self.seq.is(self.writes[i]) {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let flagged: u64 = (0..self.seconds.len()).filter(|&i| self.seq.is(self.seconds[i])).fold(0, |m, i| m | 1 << i);
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if flagged != 0 {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if self.staged.contains(&true) {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for w in out.writes.iter_mut().filter(|w| flagged >> w.slot & 1 != 0) {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | self.battery.step(enabled, out.writes.iter().any(|w| within(regions, w.at)));
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let due = if committed { self.battery.take_committed() } else { self.battery.take_unsaved() };
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | due.then(|| {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for (k, &p) in self.line_in.clone().iter().enumerate() {
+a: the event byte, the row a spans pass emitted beside the wiring's read bit (concatenating bits) :: steps.rs | self.seq.set_input(self.ev_input, row | if read { self.w.events.read_bit } else { 0 });
+a: the records the rewrite pass flags, at the addresses it emitted (wiring::Events::rows) :: steps.rs | for k in 0..self.ev_rows.len() {
+a: the records the rewrite pass flags, at the addresses it emitted (wiring::Events::rows) :: steps.rs | if self.seq.is(flag) {
+guard: the write records not landed yet, for the OAM rewrite guard :: steps.rs | let staged = (0..self.staged.len()).filter(|&i| self.staged[i]).map(|i| self.staged_at[i]);
+guard: a write record not landed yet sharing a line with a rewrite or a copy stops the run :: steps.rs | assert!(!transport::staged_in_line(staged, self.w.line_bits, p), "");
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | for &(source, dest) in bytes {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let from_bus = source.unwrap_or(dest);
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let at = match placed {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Some((l, at)) if l == lines => at,
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | _ => {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | let from = match source {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | None => self.w.fill_block | (dest & self.w.fill_mask),
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | Some(s) => {
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | if let Some(p) = map.port(at[0]) {
+guard: a copy from a port no line pass places stops the run :: steps.rs | panic!("", at[0]);
+guard: the write records not landed yet, for the OAM rewrite guard :: steps.rs | let staged = (0..self.staged.len()).filter(|&i| self.staged[i]).map(|i| self.staged_at[i]);
+guard: a write record not landed yet sharing a line with a rewrite or a copy stops the run :: steps.rs | assert!(!transport::staged_in_line(staged.clone(), self.w.line_bits, dest) && !transport::staged_in_line(staged, self.w.line_bits, from), "");
+a: the steps stream's passes, ports and copies by the addresses it emitted :: steps.rs | (self.w.blocked.0..self.w.blocked.1).contains(&p)
+a: a copy's bytes by concatenating the emitted addresses' bits :: transport.rs | let (source, dest, len) = match self {
+a: a byte of a run :: transport.rs | Copy::Byte { source, dest } => (Some(source), dest, 1),
+a: a byte with no source :: transport.rs | Copy::Fill { dest, .. } => (None, dest, 1),
+a: a block :: transport.rs | Copy::Block { source, dest, len } => {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!((source | dest) & (len - 1) == 0 && len.is_power_of_two(), "");
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(self.line as u16 & (size - 1) == 0, "", self.line);
+a: the bytes a run's bits name, a fill where the pass emitted one :: transport.rs | let bytes = move |moved: u8| (0..size).filter(move |j| moved >> j & 1 != 0).map(move |j| if fill != 0 { Copy::Fill { value: fill, dest: to | j } } else { Copy::Byte { source: at | j, dest: to | j } });
+a: the run's last byte by the bit the pass emitted :: transport.rs | if self.last_early { &mut *early } else { late }.extend(bytes(self.last));
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(self.before & self.last == 0 && self.last.count_ones() == 1 && moved.count_ones() as u64 == cycles, "", self.before, self.last);
+a: the position a pass emitted for a scheduled start :: transport.rs | pub position: Option<(u8, u8)>,
+a: the position a pass emitted for a scheduled start :: transport.rs | if let Some((phase, line)) = self.position {
+a: the locks while the span the pass emitted holds :: transport.rs | locks.iter().find(|&&(_, until)| at < until.into()).map(|&(l, _)| l)
+a: the held locks, else a look-ahead pass's :: transport.rs | let l = if locks { held_lock(held, at).unwrap_or_else(query) } else { 0 };
+a: an access's pair of locks by its kind, the slots the wiring names (wiring::Steps::write_slots) :: transport.rs | let shift = if write { bits.write_shift } else { 0 };
+a: the busy bit while its emitted range holds :: transport.rs | (l >> shift) & bits.locks | if busy.contains(&at) { bits.busy } else { 0 }
+a: the countdown to the horizon or the next start :: transport.rs | if self.passed == 0 { self.horizon - self.elapsed } else { self.countdown }
+a: the nearer emitted edge :: transport.rs | self.edges.iter().flatten().filter(|&&e| e > self.elapsed).map(|e| e - self.elapsed).min().unwrap_or(u64::MAX)
+a: the nearer of stop and edge :: transport.rs | self.until_stop().min(self.until_edge())
+a: the span of the next pass :: transport.rs | let mut start = Start { cycles: self.elapsed, since: self.elapsed, position: None };
+a: after a scheduled start :: transport.rs | if self.passed > 0 {
+a: its emitted position :: transport.rs | start.position = Some((self.schedule.phase, self.schedule.lines[self.passed - 1]));
+a: the look-ahead's span :: transport.rs | let mut start = Start { cycles: self.elapsed + extra, since: self.elapsed + extra, position: None };
+a: after a scheduled start :: transport.rs | if self.passed > 0 {
+a: its emitted position :: transport.rs | start.position = Some((self.schedule.phase, self.schedule.lines[self.passed - 1]));
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(sched.count == 0 || (sched.count <= MAX_STARTS && sched.first == cut.horizon), "", sched.count, sched.first, cut.horizon);
+guard: the horizon within the longest span :: transport.rs | assert!((1..=self.max_span).contains(&self.horizon), "", self.horizon);
+a: the dropped edge at the distance the pass emitted, the counted fall and the rise where it emitted them :: transport.rs | self.edges = [(cut.drop > 0).then_some(cut.drop), cut.edge, cut.rise];
+guard: no block past a stop or an edge :: transport.rs | assert!(cycles <= due.min(edge), "");
+a: stopped cycles count down the emitted stop :: transport.rs | if stopped {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(cycles <= self.owed, "", self.owed);
+a: the countdown from a start :: transport.rs | self.countdown -= self.countdown.min(cycles);
+a: an edge is the count reaching an instant a pass emitted :: transport.rs | let at_edge = Edges { fall: at(0) || at(1), reset: at(0), rise: at(2) };
+a: short of the stop :: transport.rs | if cycles < due {
+a: the next scheduled start :: transport.rs | if self.passed < self.schedule.count {
+a: the next start a period on, the pass after the last at the tail :: transport.rs | self.countdown = if self.passed < self.schedule.count { self.schedule.period } else { self.schedule.tail };
+a: the save's state at a hand-off, from the snapshot's two flags :: transport.rs | Battery { enabled: None, dirty: written && !committed, committed }
+b: storage: when the save is written :: transport.rs | if self.enabled.replace(enabled) == Some(true) && !enabled && self.dirty {
+b: storage :: transport.rs | let any = self.committed || self.dirty;
+b: storage :: transport.rs | any
+guard: a copy sharing a line with a record not landed stops the run :: transport.rs | staged.into_iter().any(|r| r >> line_bits == addr >> line_bits)
+b: storage: the region field of an emitted address :: transport.rs | regions.iter().any(|&(a, b)| (a..b).contains(&p))
+b: the board filter's two sides :: transport.rs | for side in 0..2 {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(to_sample >= 1, "");
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(rate >= 1, "");
+a: the segment clock counts down the sample and the end the pass emitted; a sample due at the same cycle rides in the pass that closes it :: transport.rs | match (self.to_sample, end) {
+a: the segment clock counts down the sample and the end the pass emitted; a sample due at the same cycle rides in the pass that closes it :: transport.rs | (0, _) => Close::Sample,
+a: the segment clock counts down the sample and the end the pass emitted; a sample due at the same cycle rides in the pass that closes it :: transport.rs | (_, true) => Close::End,
+a: the segment clock counts down the sample and the end the pass emitted; a sample due at the same cycle rides in the pass that closes it :: transport.rs | _ => Close::Open,
+a: a segment that holds nothing :: transport.rs | self.write.is_none() && self.events == Edges::default() && self.cycles == 0 && !self.sample && self.read.is_none()
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(e.rest <= seg.cycles, "", e.rest, seg.cycles);
+a: a pass that left no cycles (DL 0) keeps its sample and read :: transport.rs | if e.rest == 0 {
+a: the cycles the pass left (DL) counted again with the countdowns it emitted :: transport.rs | for _ in 0..e.rest {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(!seg.sample || last == Close::Sample, "");
+a: the close that ran the pass delivered once after the cycles it left :: transport.rs | if !seg.sample && (self.seg.cycles > 0 || seg.read.is_some()) {
+a: a write opens a segment (WA, WV are the first M-cycle's) :: transport.rs | if !self.seg.is_empty() {
+a: events open a segment (EV's events are its first cycle's); the pass leaves its cycles (DL) :: transport.rs | if events == Edges::default() {
+a: events open a segment (EV's events are its first cycle's); the pass leaves its cycles (DL) :: transport.rs | if closed {
+a: a segment holds one speed (one EV fast bit) :: transport.rs | if fast != self.seg.fast {
+a: a segment holds one speed (one EV fast bit) :: transport.rs | if self.seg.cycles > 0 {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(self.seg.cycles == 0 || self.seg.rate == rate, "");
+a: the end the pass emitted (SE), logged for the lockstep :: transport.rs | if self.clock.ends_next() {
+a: the segment closes where the countdowns the last pass emitted (SD in halves by the emitted rate, SE) reach 0 :: transport.rs | match close {
+a: the segment closes where the countdowns the last pass emitted (SD in halves by the emitted rate, SE) reach 0 :: transport.rs | Close::Open => {}
+a: the segment closes where the countdowns the last pass emitted (SD in halves by the emitted rate, SE) reach 0 :: transport.rs | Close::End => self.close(p),
+a: the segment closes where the countdowns the last pass emitted (SD in halves by the emitted rate, SE) reach 0 :: transport.rs | Close::Sample => {
+a: the early copies land :: transport.rs | if !self.early.is_empty() {
+guard: a line drawn shares its block with nothing that reaches what it reads :: transport.rs | assert!(self.render.is_none() || (self.own.is_none() && self.stopped.is_none() && !self.blank && !self.frame && self.held.is_empty() && !self.early.iter().chain(&self.copies).any(|c| matches!(c, Copy::Block { .. }))), "");
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(!(self.frame && self.blank), "");
+a: the line the pass named :: transport.rs | if let Some(line) = self.render {
+a: the hold change STOP's pass made :: transport.rs | if let Some(stopped) = self.stopped {
+a: the frame the pass flagged :: transport.rs | if self.frame {
+a: the blank the pass flagged :: transport.rs | if self.blank {
+a: the own byte the pass named :: transport.rs | if let Some((index, value)) = self.own {
+a: the held copies :: transport.rs | if !self.held.is_empty() {
+a: the copies :: transport.rs | if !self.copies.is_empty() {
+a: blocks to the horizon :: transport.rs | while left > 0 {
+a: blocks to the horizon :: transport.rs | let block = left.min(host.horizon());
+a: within a step, the access's cycle is all :: transport.rs | if in_step {
+a: the stopped cycles :: transport.rs | loop {
+a: none owed :: transport.rs | if owed == 0 {
+a: blocks to the horizon :: transport.rs | let block = owed.min(host.horizon());
+a: a pause's cycles by the pass's flag :: transport.rs | *if host.paused() { &mut paused } else { &mut stalled } += block;
+a: the run's bytes landed by the caller at once :: transport.rs | if let Some(r) = asks.run {
+a: the block :: transport.rs | if let Some((source, dest, len, held)) = asks.block {
+a: held by its own bit :: transport.rs | if held { &mut s.held } else { &mut s.copies }.push(Copy::Block { source, dest, len });
+a: further passes at the events the passes emit :: transport.rs | while let Some(event) = next {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(more.run.is_none() && !more.render && !more.frame && !more.blank, "");
+a: the line the pass flagged :: transport.rs | if out.render {
+a: the frame the pass flagged :: transport.rs | if out.frame {
+a: the own byte of a write :: transport.rs | if let Some(value) = write {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert_eq!(self.countdown().owed(), owed, "");
+a: the run's bytes landed by the caller at once :: transport.rs | if let Some(r) = asks.run {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(asks.block.is_none() && !asks.render && !asks.frame && !asks.blank && Self::follow(&out).is_none(), "");
+a: the held bit's change across the pass :: transport.rs | (now != was).then_some(now)
+a: STOP's outcome, the held bit's change :: transport.rs | if self.held() != was {
+a: what the countdown reached :: transport.rs | match due {
+a: nothing :: transport.rs | Due::Nothing => {}
+a: a scheduled start draws the line the pass named :: transport.rs | Due::Start(line) => {
+a: the horizon, a pass :: transport.rs | Due::Pass => {
+a: an access's pair of locks by its kind, the slots the wiring names (wiring::Steps::write_slots) :: transport.rs | let shift = if self.writes >> s & 1 != 0 { self.write_shift } else { 0 };
+a: an access's mask: the busy bit applied unconditionally, the locks by the request's own flag (RC/WC bit 3); which bus the busy copy blocks stays the model's (DB) :: transport.rs | bits.busy | if locks { bits.locks } else { 0 }
+a: the step's start: the held locks, else those the step asked for, and the busy bit :: transport.rs | locks.unwrap_or(asked) & bits.locks | if busy { bits.busy } else { 0 }
+a: the rewrite pass when the row a spans pass emitted names one (0: none) :: transport.rs | if row != 0 {
+a: the locks a pass gives when the first fetched byte's emitted mask reads them and the held ones lapsed :: transport.rs | if locks.is_none() && h.fetch_reads_locks(&req) {
+a: the locks a pass gives when the request's emitted flag asks for them :: transport.rs | let asked = if h.wants_locks(&req) { h.lock_query() } else { 0 };
+a: the streams run to the step's cycle :: transport.rs | while self.done < k {
+a: the next access's cycle on the way :: transport.rs | let next = self.cycles.iter().copied().filter(|&c| c > self.done && c < k).min().unwrap_or(k);
+a: the accesses at that cycle :: transport.rs | for s in (0..SLOTS).filter(|&s| self.cycles[s] == next) {
+guard: each access's predicted state held to the host's :: transport.rs | let Some((want, mask)) = self.expect[s] else { continue };
+a: the locks while they hold, else a pass :: transport.rs | let locks = if mask & bits.locks != 0 { h.locks().unwrap_or_else(|| h.lock_query()) } else { 0 };
+guard: the predicted state :: transport.rs | let got = (bits.slot_locks(locks, s) | if h.busy() { bits.busy } else { 0 }) & mask;
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert_eq!(got, want, "");
+a: the bus state's bits :: transport.rs | let all = bits.locks | bits.busy;
+a: at most two asks :: transport.rs | for round in 0.. {
+a: each access :: transport.rs | for s in (0..SLOTS).filter(|&s| cycles[s] > 0) {
+a: each access's state from the spans stream's emitted ranges :: transport.rs | let raw = match ahead[s] {
+a: each access's state from the spans stream's emitted ranges :: transport.rs | Some((raw, with)) if with || !locks => raw,
+a: each access's state from the spans stream's emitted ranges :: transport.rs | _ => {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(cycles[s] >= line.done, "", cycles[s], line.done);
+a: each access's state from the spans stream's emitted ranges :: transport.rs | let state = raw & mask | start & !mask & all;
+a: the state where it differs from the start :: transport.rs | if state != start {
+a: settled :: transport.rs | if next == access {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert!(round < 4, "");
+a: the access the busy copy's emitted end unblocks :: transport.rs | let unblocked = (0..SLOTS).filter(|&s| nibble[s] & bits.replace != 0 && nibble[s] & bits.busy == 0).map(|s| cycles[s]).min();
+a: the copy still blocking at the start :: transport.rs | if !ticked
+a: the copy still blocking at the start (continued line) :: transport.rs | && start & bits.busy != 0
+a: the copy still blocking at the start (continued line) :: transport.rs | && let Some(end) = unblocked
+a: the reads before it, at their own cycles :: transport.rs | for i in (0..2).filter(|&i| reads[i] && cycles[i] < end) {
+guard: a check of what a pass emitted or of the cut's own count :: transport.rs | assert_eq!(again.cycles, cycles, "");
+a: threads and batches :: worker.rs | if !thread {
+a: threads and batches :: worker.rs | for batch in rx {
+a: threads and batches :: worker.rs | for job in batch {
+a: threads and batches :: worker.rs | if !queued.is_empty() {
+a: threads and batches :: worker.rs | match self {
+a: threads and batches :: worker.rs | Worker::Thread { jobs, queued, .. } => {
+a: threads and batches :: worker.rs | if queued.len() >= BATCH {
+a: threads and batches :: worker.rs | Worker::Inline(t) => f(t),
+a: threads and batches :: worker.rs | if let Worker::Thread { jobs, queued, .. } = self {
+a: threads and batches :: worker.rs | match self {
+a: threads and batches :: worker.rs | Worker::Thread { jobs, queued, .. } => {
+a: threads and batches :: worker.rs | Worker::Inline(t) => f(t),
+a: threads and batches :: worker.rs | match self {
+a: threads and batches :: worker.rs | Worker::Thread { mut jobs, mut queued, mut handle } => {
+a: threads and batches :: worker.rs | Worker::Inline(t) => *t,

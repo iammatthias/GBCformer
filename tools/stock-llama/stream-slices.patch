@@ -1,0 +1,287 @@
+--- a/src/models/llama.cpp
++++ b/src/models/llama.cpp
+@@ -1,11 +1,102 @@
+ #include "models.h"
+ 
++#include <atomic>
++#include <cstring>
++
++// stream-slices patch: the stream the next decodes run, by its index in the model's
++// `streams`, or -1 for the whole model. The caller names it before each decode.
++static std::atomic<int> gbcformer_stream{-1};
++static std::vector<std::string> gbcformer_stream_names;
++
++// A batch of at most this many tokens runs the whole model whatever stream is named (the
++// fence against Metal's few-row kernels, at the graph below).
++static const int gbcformer_fence = 16;
++
++extern "C" LLAMA_API int llama_gbcformer_fence(void) {
++    return gbcformer_fence;
++}
++
++extern "C" LLAMA_API int llama_gbcformer_set_stream(const char * name) {
++    int sel = -1;
++    for (size_t i = 0; name && i < gbcformer_stream_names.size(); ++i) {
++        if (gbcformer_stream_names[i] == name) {
++            sel = (int) i;
++        }
++    }
++    gbcformer_stream.store(sel);
++    return sel;
++}
++
++// Keeps a graph built for one stream from being reused for another.
++class llm_graph_input_stream : public llm_graph_input_i {
++public:
++    llm_graph_input_stream(int sel) : sel(sel) {}
++    void set_input(const llama_ubatch *) override {}
++    bool can_reuse(const llm_graph_params & params) override { return (params.ubatch.n_tokens > gbcformer_fence ? gbcformer_stream.load() : -1) == sel; }
++    const int sel;
++};
++
+ void llama_model_llama::load_arch_hparams(llama_model_loader & ml) {
+     uint32_t n_vocab = 0;
+     ml.get_key(LLM_KV_VOCAB_SIZE, n_vocab, false) || ml.get_arr_n(LLM_KV_TOKENIZER_LIST, n_vocab, false);
+ 
+     ml.get_key(LLM_KV_ATTENTION_LAYERNORM_RMS_EPS, hparams.f_norm_rms_eps);
+ 
++    // stream-slices patch
++    gbcformer_stream_names.clear();
++    for (const char * name : {"ppu", "cpu", "apu", "ctl", "len", "stp"}) {
++        const std::string base = std::string("gbcformer.stream.") + name;
++        const int64_t kn = gguf_find_key(ml.metadata, (base + ".block_count").c_str());
++        const int64_t kf = gguf_find_key(ml.metadata, (base + ".ffn").c_str());
++        const int64_t kh = gguf_find_key(ml.metadata, (base + ".heads").c_str());
++        if (kn < 0 || kf < 0 || kh < 0) {
++            continue;
++        }
++        GGML_ASSERT(gguf_get_arr_type(ml.metadata, kf) == GGUF_TYPE_UINT32);
++        const uint32_t * f = (const uint32_t *) gguf_get_arr_data(ml.metadata, kf);
++        const size_t nf = gguf_get_arr_n(ml.metadata, kf);
++        stream s;
++        s.name = name;
++        s.n_layer = gguf_get_val_u32(ml.metadata, kn);
++        GGML_ASSERT(s.n_layer >= 1 && s.n_layer <= (int64_t) hparams.n_layer());
++        size_t at = 0;
++        for (int64_t l = 0; l < s.n_layer; ++l) {
++            GGML_ASSERT(at < nf);
++            const uint32_t runs = f[at++];
++            GGML_ASSERT(at + 2*(size_t) runs <= nf);
++            s.ffn.emplace_back();
++            for (uint32_t r = 0; r < runs; ++r, at += 2) {
++                GGML_ASSERT(f[at + 1] > 0 && (int64_t) f[at] + f[at + 1] <= (int64_t) hparams.n_ff(l));
++                s.ffn.back().emplace_back(f[at], f[at + 1]);
++            }
++        }
++        GGML_ASSERT(at == nf);
++        GGML_ASSERT(gguf_get_arr_type(ml.metadata, kh) == GGUF_TYPE_UINT32);
++        const uint32_t * h = (const uint32_t *) gguf_get_arr_data(ml.metadata, kh);
++        const size_t nh = gguf_get_arr_n(ml.metadata, kh);
++        at = 0;
++        for (int64_t l = 0; l < s.n_layer; ++l) {
++            GGML_ASSERT(at < nh);
++            const uint32_t n = h[at++];
++            GGML_ASSERT(at + n <= nh);
++            s.heads.emplace_back();
++            for (uint32_t i = 0; i < n; ++i, ++at) {
++                GGML_ASSERT(h[at] < hparams.n_head(l) && (i == 0 || h[at] > h[at - 1]));
++                auto & runs = s.heads.back();
++                if (!runs.empty() && runs.back().first + runs.back().second == h[at]) {
++                    runs.back().second++;
++                } else {
++                    runs.emplace_back(h[at], 1);
++                }
++            }
++        }
++        GGML_ASSERT(at == nh);
++        // A slice views an f16 matrix from inside its rows, and Metal loads those views in blocks aligned to 8 bytes.
++        GGML_ASSERT(gguf_get_alignment(ml.metadata) % 8 == 0 && "stream-slices patch: a sliced matrix starts on 8 bytes");
++        streams.push_back(std::move(s));
++        gbcformer_stream_names.push_back(name);
++    }
++
+     if (hparams.n_expert == 8) {
+         switch (hparams.n_layer()) {
+             case 32: type = LLM_TYPE_8x7B; break;
+@@ -127,7 +218,61 @@
+ 
+     ggml_tensor * inp_out_ids = build_inp_out_ids();
+ 
+-    for (int il = 0; il < n_layer; ++il) {
++    // stream-slices patch: a named stream runs its own layers, heads and FFN units. Every
++    // other head and unit adds exactly 0 at the stream's positions, and so does every later
++    // layer. The slices are views of the layers' f16 matrices: runs of rows, and runs of
++    // columns through mm_cols below. Metal's kernels for at most 16 rows read a view of
++    // columns wrong (seen: 6 output rows through a run of the output projection starting
++    // at unit 2,047, before mm_cols), so every sliced matmul keeps all the batch's rows, a
++    // batch of at most 16 tokens runs the whole model, and the output rows are picked
++    // after the last layer.
++    const auto & streams = static_cast<const llama_model_llama &>(model).streams;
++    const int stream_sel = n_tokens > gbcformer_fence ? gbcformer_stream.load() : -1;
++    const llama_model_llama::stream * stream = stream_sel >= 0 && (size_t) stream_sel < streams.size() ? &streams[stream_sel] : nullptr;
++    res->add_input(std::make_unique<llm_graph_input_stream>(stream ? stream_sel : -1));
++    const int64_t n_layer_run = stream ? stream->n_layer : n_layer;
++
++    // stream-slices patch: rows [first, first + rows) of `w`, a matrix that reads the
++    // channels. Each row starts on 4 weights, as Metal's kernels need (mm_cols).
++    auto reads = [&](ggml_tensor * w, int64_t first, int64_t rows) {
++        GGML_ASSERT(w->nb[1] % (4*w->nb[0]) == 0 && "stream-slices patch: a row of a sliced matrix starts on 4 weights");
++        return ggml_view_2d(ctx0, w, w->ne[0], rows, w->nb[1], first*w->nb[1]);
++    };
++
++    // stream-slices patch: columns [first, first + cols) of `w`, a matrix that writes the
++    // channels, times `x`. Metal's matmul kernels load a weight row in blocks of 16 from
++    // its first byte when the row's width is a multiple of 32, and a row of f16 that
++    // starts on an odd weight then reads wrong: seen at a run of 480 units of a down
++    // projection starting at unit 2,311, whose product was finite and wrong. (Any other
++    // width takes the kernel's element loads, which read right.) The Metal Shading
++    // Language aligns such a block (half4x4) to 8 bytes, so the view starts on the 4
++    // weights at or before `first`, and `x` gains that many zero rows in front, which
++    // add exactly 0.
++    auto mm_cols = [&](ggml_tensor * w, int64_t first, int64_t cols, ggml_tensor * x) {
++        const int64_t lead = first % 4;
++        GGML_ASSERT(w->nb[1] % (4*w->nb[0]) == 0 && "stream-slices patch: a row of a sliced matrix starts on 4 weights");
++        ggml_tensor * v = ggml_view_2d(ctx0, w, lead + cols, w->ne[1], w->nb[1], (first - lead)*w->nb[0]);
++        if (lead > 0) {
++            x = ggml_pad_ext(ctx0, x, lead, 0, 0, 0, 0, 0, 0, 0);
++        }
++        return build_lora_mm(v, x);
++    };
++
++    // stream-slices patch: build_ffn's SiLU FFN with a parallel gate, with `down` as the
++    // run of columns [first, first + cols) of the layer's (mm_cols). Every other step is
++    // build_ffn's.
++    auto ffn_cols = [&](ggml_tensor * x, ggml_tensor * up, ggml_tensor * gate, ggml_tensor * down, int64_t first, int64_t cols, int il) {
++        GGML_ASSERT(hparams.swiglu_clamp_shexp[il] <= 1e-6f);
++        ggml_tensor * tmp = build_lora_mm(up, x);
++        cb(tmp, "ffn_up", il);
++        ggml_tensor * g = build_lora_mm(gate, x);
++        cb(g, "ffn_gate", il);
++        g = ggml_swiglu_split(ctx0, g, tmp);
++        cb(g, "ffn_swiglu", il);
++        return mm_cols(down, first, cols, g);
++    };
++
++    for (int il = 0; il < n_layer_run; ++il) {
+         res->t_layer_inp[il] = inpL;
+ 
+         const int64_t n_head = hparams.n_head(il); // layer-shapes patch
+@@ -140,8 +285,46 @@
+                 LLM_NORM_RMS, il);
+         cb(cur, "attn_norm", il);
+ 
+-        // self-attention
+-        {
++        if (stream && stream->heads[il].empty()) {
++            // stream-slices patch: the stream has no head in this layer
++            cur = nullptr;
++        } else if (stream) {
++            // stream-slices patch: the stream's heads, as views of the layer's query rows and
++            // of the output projection's columns
++            const auto & layer = model.layers[il];
++            GGML_ASSERT(!layer.wqkv && !layer.wq_b && !layer.wk_b && !layer.wv_b && !layer.wo_b && !layer.wq_s && !layer.wk_s && !layer.wv_s && !layer.wo_s);
++            GGML_ASSERT(!hparams.use_kq_norm && hparams.f_clamp_kqv <= 0.0f);
++            ggml_tensor * rope_factors = model.get_rope_factors(cparams, il);
++            ggml_tensor * Qcur = nullptr;
++            int64_t n_head_run = 0;
++            for (const auto & [first, heads] : stream->heads[il]) {
++                ggml_tensor * wq = reads(layer.wq, first*n_embd_head, heads*n_embd_head);
++                ggml_tensor * q = build_lora_mm(wq, cur);
++                Qcur = Qcur ? ggml_concat(ctx0, Qcur, q, 0) : q;
++                n_head_run += heads;
++            }
++            ggml_tensor * Kcur = build_lora_mm(layer.wk, cur);
++            ggml_tensor * Vcur = build_lora_mm(layer.wv, cur);
++            Qcur = ggml_reshape_3d(ctx0, Qcur, n_embd_head, n_head_run, n_tokens);
++            Kcur = ggml_reshape_3d(ctx0, Kcur, n_embd_head, n_head_kv,  n_tokens);
++            Vcur = ggml_reshape_3d(ctx0, Vcur, n_embd_head, n_head_kv,  n_tokens);
++            Qcur = ggml_rope_ext(ctx0, Qcur, inp_pos, rope_factors, n_rot, rope_type, n_ctx_orig, freq_base, freq_scale, ext_factor, attn_factor, beta_fast, beta_slow);
++            Kcur = ggml_rope_ext(ctx0, Kcur, inp_pos, rope_factors, n_rot, rope_type, n_ctx_orig, freq_base, freq_scale, ext_factor, attn_factor, beta_fast, beta_slow);
++            cb(Qcur, "Qcur", il);
++            cb(Kcur, "Kcur", il);
++            cb(Vcur, "Vcur", il);
++            ggml_tensor * att = build_attn(inp_attn, nullptr, nullptr, nullptr, Qcur, Kcur, Vcur, nullptr, nullptr, nullptr, kq_scale, il);
++            cur = nullptr;
++            int64_t at = 0;
++            for (const auto & [first, heads] : stream->heads[il]) {
++                GGML_ASSERT(n_embd_head % 4 == 0 && "stream-slices patch: a head's rows of the attention output start on 4 values");
++                ggml_tensor * a  = ggml_view_2d(ctx0, att, heads*n_embd_head, att->ne[1], att->nb[1], at*n_embd_head*att->nb[0]);
++                ggml_tensor * o  = mm_cols(layer.wo, first*n_embd_head, heads*n_embd_head, a);
++                cur = cur ? ggml_add(ctx0, cur, o) : o;
++                at += heads;
++            }
++            cb(cur, "attn_out", il);
++        } else {
+             // rope freq factors for llama3; may return nullptr for llama2 and other models
+             ggml_tensor * rope_factors = model.get_rope_factors(cparams, il);
+ 
+@@ -177,13 +360,37 @@
+                     Qcur, Kcur, Vcur, nullptr, nullptr, nullptr, kq_scale, il);
+             cb(cur, "attn_out", il);
+         }
+-        if (il == n_layer - 1 && inp_out_ids) {
++        if (!stream && il == n_layer_run - 1 && inp_out_ids) {
+             cur   = ggml_get_rows(ctx0,   cur, inp_out_ids);
+             inpSA = ggml_get_rows(ctx0, inpSA, inp_out_ids);
+         }
+-        ggml_tensor * ffn_inp = ggml_add(ctx0, cur, inpSA);
++        ggml_tensor * ffn_inp = cur ? ggml_add(ctx0, cur, inpSA) : inpSA;
+         cb(ffn_inp, "ffn_inp", il);
+ 
++        if (stream) {
++            // stream-slices patch: each run of the stream's units as views of the layer's
++            // matrices (rows of gate and up, a run of columns of down)
++            const auto & layer = model.layers[il];
++            GGML_ASSERT(layer.ffn_gate_inp == nullptr && layer.ffn_gate && layer.ffn_up && layer.ffn_down);
++            ggml_tensor * sum = nullptr;
++            if (!stream->ffn[il].empty()) {
++                ggml_tensor * normed = build_norm(ffn_inp, layer.ffn_norm, NULL, LLM_NORM_RMS, il);
++                cb(normed, "ffn_norm", il);
++                for (const auto & [first, rows] : stream->ffn[il]) {
++                    ggml_tensor * gate = reads(layer.ffn_gate, first, rows);
++                    ggml_tensor * up   = reads(layer.ffn_up,   first, rows);
++                    ggml_tensor * out  = ffn_cols(normed, up, gate, layer.ffn_down, first, rows, il);
++                    sum = sum ? ggml_add(ctx0, sum, out) : out;
++                }
++            }
++            cur = sum ? ggml_add(ctx0, sum, ffn_inp) : ffn_inp;
++            cb(cur, "ffn_out", il);
++            cur = build_cvec(cur, il);
++            cb(cur, "l_out", il);
++            inpL = cur;
++            continue;
++        }
++
+         // feed-forward network (non-MoE)
+         if (model.layers[il].ffn_gate_inp == nullptr) {
+ 
+@@ -233,6 +440,9 @@
+         inpL = cur;
+     }
+     cur = inpL;
++    if (stream && inp_out_ids) {
++        cur = ggml_get_rows(ctx0, cur, inp_out_ids);
++    }
+ 
+     cur = build_norm(cur,
+             model.output_norm, NULL,
+--- a/src/models/models.h
++++ b/src/models/models.h
+@@ -174,6 +174,17 @@
+     void load_arch_hparams(llama_model_loader & ml) override;
+     void load_arch_tensors(llama_model_loader & ml) override;
+ 
++    // stream-slices patch: a part of an overlay checkpoint as its `gbcformer.stream.<name>.*`
++    // keys give it: the layers it runs and, per layer, its query heads and its FFN units,
++    // each as runs of the layer's own.
++    struct stream {
++        std::string name;
++        int64_t n_layer = 0;
++        std::vector<std::vector<std::pair<int64_t, int64_t>>> heads; // [layer] (first head, heads)
++        std::vector<std::vector<std::pair<int64_t, int64_t>>> ffn;   // [layer] (first row, rows)
++    };
++    std::vector<stream> streams;
++
+     template <bool embed>
+     struct graph : public llm_graph_context {
+         graph(const llama_model & model, const llm_graph_params & params);

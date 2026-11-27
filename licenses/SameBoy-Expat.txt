@@ -1,0 +1,29 @@
+src/machine/apu.rs is a port of Core/apu.c from SameBoy v1.0.5 (commit ea667ad79aa28409f034b1fd6da7304e1844750d,
+https://github.com/LIJI32/SameBoy), and the APU circuit in src/apu_circuit/ computes the same rules.
+src/machine/fifo.rs, one line's mode 3, ports the same version's pixel fetcher and FIFO (Core/display.c:
+GB_display_run from mode_3_start, advance_fetcher_state_machine, render_pixel_if_possible) and its write
+timing (Core/sm83_cpu.c, the conflict maps of cycle_write), and the stepper in src/ppu_circuit/stepper.rs
+computes the same rules.
+SameBoy's licence, as its LICENSE file states it at that commit:
+
+Expat License
+
+Copyright (c) 2015-2026 Lior Halphon
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

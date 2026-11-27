@@ -1,0 +1,11 @@
+# One sha1 per compiled checkpoint, held by `cargo run --release --example digest -- --check tools/digests.txt`
+# (tools/gate.sh). A change that moves one on purpose updates its line and says why in docs/perf-log.md.
+# Only one-model moves when the placement of its parts does (`one_model::PLACEMENT`), or how they share the input slots (`Circuit::concat`).
+cpu bebf5d93e83b1de0820639d0f646d254501612d8
+cpu-memory 836fb6def313fa99a8a98edb0a110c38619e3fda
+apu d8d3a06e8be61331d86f99cd86b5a1cf25acaeea
+control 6e225675a92b5ee7bfa01bebb60a4237118de75c
+ppu 79706b588c16cc2032b797e0193f0cd6b61d9d9e
+one-model ff86dde70eb743ff3b0515349ebed9b51a9152cc
+ppu-stepper 4fdab5212c7bc38f1185884f3956d12c26cf88db
+ppu-length c42658f1c0da6ead7458cb061f56da77d3990f9b

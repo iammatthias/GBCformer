@@ -1,0 +1,19 @@
+# name|run|range|first|count|kind|shows|caption   (one still per milestone, 4x)
+still-01-title|run2|0-4400|2300|1|still|The title screen|Pokémon Yellow's title screen, a frame decoded by the model.
+still-02-new-game|run2|5555-7300|5555|1|still|The player's room at the start of a new game|A new game begins, a frame decoded by the model.
+still-03-pallet-town|run2|5555-7300|6029|1|still|Pallet Town|Pallet Town, a frame decoded by the model.
+still-04-pikachu|run2|9830-16514|11565|1|still|Oak's lab after Pikachu is received|Oak's lab, a frame decoded by the model.
+still-05-rival-battle|run2|9830-16514|12900|1|still|The rival battle's menu|The rival battle, a frame decoded by the model.
+still-06-route1|run2|17021-19700|17400|1|still|Route 1 with Pikachu following|Route 1, a frame decoded by the model.
+still-07-wild-battle|run2|17021-19700|18700|1|still|A wild battle on Route 1|A wild battle, a frame decoded by the model.
+still-08-viridian|run2|19846-20949|19900|1|still|Viridian City|Viridian City, a frame decoded by the model.
+still-09-pokedex|run2|23923-27145|27144|1|still|Oak's lab after the Pokédex is received|After the Pokédex, a frame decoded by the model.
+still-10-pokemon-centre|run2|30093-31404|31000|1|still|The Viridian Pokémon Centre|The Pokémon Centre, a frame decoded by the model.
+still-11-capture|run2|45400-46700|46380|1|still|Mankey's Pokédex page after the capture|A capture's Pokédex page, a frame decoded by the model.
+still-12-viridian-forest|run2|74246-78500|74500|1|still|Viridian Forest|Viridian Forest, a frame decoded by the model.
+still-13-pewter|run2|113488-115254|113600|1|still|Pewter City|Pewter City, a frame decoded by the model.
+still-14-brock|run2|146070-152100|147300|1|still|The battle against Brock|Brock's gym battle, a frame decoded by the model.
+still-15-badge|run2|146070-152100|152099|1|still|Pewter Gym after the Boulder Badge|After the first badge, a frame decoded by the model.
+still-16-route3|run3|155252-163000|155300|1|still|Route 3|Route 3, a frame decoded by the model.
+still-17-mt-moon|run3|187743-193603|188400|1|still|Mt. Moon 1F|Mt. Moon, a frame decoded by the model.
+still-18-last-frame|run3|187743-193603|193602|1|still|The last frame of the playthrough, frame 193,602, inside Mt. Moon|The playthrough's last frame, decoded by the model.

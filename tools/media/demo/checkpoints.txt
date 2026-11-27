@@ -1,0 +1,32 @@
+2300 92b7cc1c74ee35a9983399d0770507f71c0590e2 title title screen after the uninterrupted intro
+2942 204be793388b4516c99b51c0bdf25fd299b64349 menu main menu, options set (text fast, battle style set)
+5555 4753722798b0fc6aabf2d327176203d0686fd229 room new game begun: the player's room, named LLAMA, rival BLUE
+6029 7d2006c256aea4bff93e98ed215e3f02b181da1f pallet Pallet Town, outside the player's house
+11566 6370aaa54197510a45f1e1e92fb7a3142edaeb73 pikachu Oak's lab: Pikachu received (L5)
+12004 4dba1b882db39f4d5428ad4eb6e8c4c2c9f0c8ab rival-start Oak's lab: the rival battle begins
+16514 0834dd8f97a4ed1bc1ebbdadccd1a079992376ff rival-won Oak's lab: rival beaten, Pikachu L6
+17021 c97761072fbaecb90d8b00b3deb5a60b4ac1c465 route1 Route 1, south end
+18091 05a9a3e9c73860c6dcf814228ba48f4d752eaef0 grass Route 1, at the tall grass before the first wild battle
+19654 9c99dc91d6e185ef1f4c6d20365f603e2a977f4d wild1 Route 1, after the first wild battle
+19846 c159e81d680c966b29a9d5af48be0cc2d1d7509c viridian Viridian City, south entrance
+27145 e4f3f8db6b561484fe55ea99edc33611e0d42901 pokedex Oak's lab: parcel delivered, Pokédex received
+30093 95521085c174c95490bb65837791e03cb35bd99a center Viridian Pokémon Centre, at the door
+31404 152f027108a2a247b09058218c6a15d1a3984cb3 healed Viridian Pokémon Centre, healed
+32897 0bb2fbba289688e9541a9a8f75915ca4f4ff9e8e shopped Viridian Mart: 8 Poké Balls and 5 Potions bought
+33621 d6b60769981d343522831adc6292abd554f52a2c route22 Route 22, east end
+45450 e1af3edbbd6722186e148af06ac5b8194ebbf122 mankey Route 22: a wild Mankey, before the capture
+46606 7b4fe1e5b5b6dafc554777be086c532d0f59355d caught Route 22: Mankey caught with the first ball
+59200 2284ff36062a0aee19ada3c50f09ac660d201470 healed2 Viridian City: Mankey L4 and Pikachu L7 healed, 7 Poké Balls, 5 Potions
+61844 bdb63345d82ea063c70ce09ae27fe13a319297c2 route2 Route 2, south end
+74246 535ee46b33b34d774b60e046a7243adb42619925 forest Viridian Forest, south entrance
+75098 59fef00ac9c6b4bd5ea07053021f1365c8512c5e trainer1 Viridian Forest: the first trainer battle begins
+99517 5ed7271d1fa9306cd0c053e4b40393832b7cbe1e forest-north Viridian Forest, north exit: Mankey L7, Pikachu L9
+113488 9275f11569209e4ccea872d84fc82214e3d20ed5 pewter Pewter City, south entrance: Mankey L8, Pikachu L9
+138122 9ec5bd54f450d2fad872ce964727b48e5567d5b1 gym-door Pewter City: healed, Mankey L9 with Low Kick, before the gym
+146070 81eec35689d37e820e38f987de071ec21b51c8af brock Pewter Gym: before Brock, Mankey L10, Pikachu L9, healed
+152100 98620cafad058cfc31864ff89a1276b988cc379f badge Pewter Gym: Brock beaten, Boulder Badge
+155252 570a1840f156b6bb07cf4ccd238e0b028a5c711c route3 Route 3, west end: Mankey L11, Pikachu L9, healed
+185166 7926de0e210a0fd322d2584b7c7a7871022ec44c route3-mid Route 3: four trainers beaten, Mankey L14, healed
+187807 699a708de584b9b3abd16fb7508a7acc7f2e8f84 route4 Route 4, below Mt. Moon: Mankey L14
+188253 0561b4b78b6b6708337e33d47d388b51cfea46aa mtmoon Mt. Moon 1F, the entrance
+193603 7e7117faffa3c86be58dd135b4c6709942a2f585 mtmoon-in Mt. Moon 1F, inside the cave: Mankey L15, Pikachu L9

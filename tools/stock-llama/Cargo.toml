@@ -1,0 +1,18 @@
+[package]
+name = "stock-llama"
+version = "0.1.0"
+edition = "2024"
+description = "Runs GBCformer's exported checkpoints in llama.cpp and compares its tokens with the dense pass and the engine"
+license = "MIT OR Apache-2.0"
+publish = false
+
+# Its own workspace: nothing here enters the gbcformer crate's dependency graph.
+[workspace]
+
+[dependencies]
+gbcformer = { path = "../..", default-features = false, features = ["stock"] }
+serde_json = "1.0.154"
+sha1_smol = "1.0.1"
+
+[profile.release]
+debug = "line-tables-only"
